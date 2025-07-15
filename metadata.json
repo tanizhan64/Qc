@@ -1,0 +1,6 @@
+{
+  "description": "A Telegram Mini App game called 'Quantum Core'. It's an idle-mining game where users collect QC tokens. It features a futuristic, anime-inspired design, leagues, a leaderboard, and a TON wallet connection. The game saves progress per-user based on their Telegram ID and includes a full transaction history. It also has a 'Global' screen with simulated network stats, a shop with purchasable upgrades and skins, and an achievement system.",
+  "requestFramePermissions": [],
+  "name": "Qc",
+  "prompt": ""
+}

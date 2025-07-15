@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Quantum Core</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap');
+
+      :root {
+        --bg-color: #030014;
+        --primary-color: #00f6ff; /* Electric Cyan */
+        --secondary-color: #ff00a8; /* Hyper Pink */
+        --accent-color: #33ffc4; /* Quantum Teal */
+        --text-color: #ffffff;
+        
+        --container-bg: rgba(25, 15, 45, 0.25);
+        --border-color: rgba(0, 246, 255, 0.25);
+        --glass-border: 1px solid var(--border-color);
+        --glass-shadow: 0 0 25px rgba(0,0,0,0.2);
+
+        --mono-font: 'Roboto Mono', monospace;
+        --base-font: 'Exo 2', sans-serif;
+
+        /* Skin properties */
+        --bg-image: radial-gradient(circle at 25% 25%, var(--primary-color), transparent 40%),
+                    radial-gradient(circle at 75% 60%, var(--secondary-color), transparent 35%),
+                    radial-gradient(circle at 50% 90%, var(--violet-color), transparent 45%);
+        --bg-opacity: 0.15;
+        --lattice-color: rgba(157, 78, 221, 0.1);
+        --core-glow-color: var(--primary-color);
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--base-font);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        overscroll-behavior-y: contain;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        user-select: none;
+        -webkit-user-select: none;
+        overflow: hidden; /* Prevent body scroll */
+      }
+      
+      .background-layers {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        transition: background-color 0.5s ease;
+      }
+
+      .stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        background-image: radial-gradient(1px 1px at 25px 25px, #fff, transparent),
+                          radial-gradient(1px 1px at 50px 75px, #fff, transparent),
+                          radial-gradient(2px 2px at 100px 150px, #fff, transparent);
+        background-size: 200px 200px;
+        animation: pan-stars 120s linear infinite;
+      }
+      
+      .nebula {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: var(--bg-image);
+        opacity: var(--bg-opacity);
+        mix-blend-mode: screen;
+        animation: pan-nebula 90s linear infinite;
+        transition: opacity 0.5s ease, background 0.5s ease;
+      }
+
+      .lattice {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          linear-gradient(45deg, var(--lattice-color) 1px, transparent 1px),
+          linear-gradient(-45deg, var(--lattice-color) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: pan-stars 180s linear infinite reverse;
+        transition: background-image 0.5s ease;
+      }
+
+      @keyframes pan-stars {
+        from { transform: translate(0, 0); }
+        to { transform: translate(-100%, -100%); }
+      }
+
+      @keyframes pan-nebula {
+        0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+        50% { transform: translate(25%, 25%) rotate(180deg) scale(1.2); }
+      }
+      
+      #root {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      /* Skin Definitions */
+      .skin-fractal-dimension {
+        --primary-color: #9d4edd;
+        --secondary-color: #ff00ff;
+        --accent-color: #00f6ff;
+        --lattice-color: rgba(255, 0, 255, 0.15);
+        --bg-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><defs><filter id="f" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="15" /></filter></defs><rect fill="%239d4edd" width="100%" height="100%"/><g fill="%23ff00ff" filter="url(%23f)"><ellipse cx="100" cy="100" rx="200" ry="100" /><ellipse cx="500" cy="400" rx="300" ry="150" transform="rotate(45 500 400)"/></g></svg>');
+        --bg-opacity: 0.4;
+      }
+      .skin-chronocore {
+        --primary-color: #d4af37;
+        --secondary-color: #b99d6b;
+        --accent-color: #ffdead;
+        --bg-color: #2c2828;
+        --container-bg: rgba(60, 50, 40, 0.5);
+        --border-color: rgba(212, 175, 55, 0.4);
+        --lattice-color: rgba(212, 175, 55, 0.1);
+        --bg-image: radial-gradient(circle, #b99d6b, transparent 50%);
+        --bg-opacity: 0.1;
+      }
+      .skin-dark-matter-reactor {
+        --primary-color: #ff1f1f;
+        --secondary-color: #ff8a1f;
+        --accent-color: #ff4d4d;
+        --bg-color: #000;
+        --container-bg: rgba(30, 0, 0, 0.5);
+        --border-color: rgba(255, 31, 31, 0.4);
+        --lattice-color: rgba(255, 31, 31, 0.15);
+        --bg-image: radial-gradient(circle, #ff1f1f, transparent 40%);
+        --core-glow-color: #ff1f1f;
+        --bg-opacity: 0.2;
+      }
+      .skin-cyber-vortex {
+        --primary-color: #00ffff;
+        --secondary-color: #39ff14;
+        --accent-color: #ff00ff;
+        --bg-color: #0a011a;
+        --border-color: rgba(0, 255, 255, 0.4);
+        --lattice-color: rgba(0, 255, 255, 0.1);
+        --bg-image: none;
+        --bg-opacity: 0;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div class="background-layers">
+      <div class="stars"></div>
+      <div class="nebula"></div>
+      <div class="lattice"></div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
